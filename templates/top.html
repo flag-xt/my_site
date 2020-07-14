@@ -1,0 +1,69 @@
+
+<div class="head">
+    <div class="head-in">
+        <ul class="options">
+            <li class="sub"><a href="/order/queryAll/">我的订单</a></li>
+
+            <li class="sub"><a href="/">商场中心</a></li>
+            <li class="sub"><a href="/cart/queryAll/">我的购物车</a></li>
+        </ul>
+
+
+        {% if loginUser %}
+            <div class="register">欢迎 <a href="/user/center/" style="color: red">{{ loginUser.username }}</a></div>
+
+        {% else %}
+            <div class="register"><a href="/user/register/">免费注册</a></div>
+            <div class="sign"><a href="http://127.0.0.1:8000/user/login">登录</a></div>
+
+        {% endif %}
+
+
+
+
+    </div>
+</div>
+<style>
+    .search-btn {
+    color: #fff;
+    border: none;
+    background: red url(/static/1_06.png);
+    height: 35px;
+    font-size: 16px;
+    padding: 0 12px;
+    border-radius: 0 2px 2px 0;
+    width: 15%;
+}
+</style>
+<div class="search">
+    <ul class="items">
+        <li class="item">
+            <a href="/?category=2#">
+                <img src="/static/1_09.png">
+                <p>10:00开抢</p>
+            </a>
+        </li>
+        <li class="item">
+            <a href="/?category=2#">
+                <img src="/static/1_11.png">
+                <p>买手砍价</p>
+            </a>
+        </li>
+        <li class="item">
+            <a href="/?category=2#">
+                <img src="/static/1_13.png">
+                <p>验货质检</p>
+            </a>
+        </li>
+    </ul>
+
+    <form action="/query/" method="post">
+        {% csrf_token %}
+        <div class="input">
+            <input  name="query" value="" placeholder="请输入想找的宝贝">
+            <button class="search-btn" type="submit"></button>
+        </div>
+    </form>
+
+</div>
+

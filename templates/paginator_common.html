@@ -1,0 +1,39 @@
+{% if goods_page.object_list %}
+    <div>
+    <ul class="pagination">
+        <li class="prev-page">
+            {% if goods_page.number != 1 %}
+                <a href="?page=1"><span>首页</span></a>
+             {% endif %}
+        </li>
+
+    <li class="prev-page">
+        {% if goods_page.has_previous %}
+            <a href="?page={{ goods_page.previous_page_number }}" ><span>上一页</span></a>
+        {% endif %}
+    </li>
+
+    {% for pr in page_range %}
+
+        {% if pr == goods_page.number %}
+            <li><strong>{{ pr }}</strong></li>
+        {% else %}
+            <li>
+             <a href="?page={{ pr }}">{{ pr }}</a>
+            </li>
+        {% endif %}
+
+    {% endfor %}
+
+    <li class="next-page">
+         {% if goods_page.has_next %}
+            <a href="?page={{ goods_page.next_page_number }}" ><span>下一页</span></a>
+        {% endif %}
+    </li>
+
+    <li class="next-page">
+         <a href="?page={{ goods_page.paginator.num_pages }}"><span>尾页</span></a>
+    </li>
+    </ul>
+    </div>
+{% endif %}

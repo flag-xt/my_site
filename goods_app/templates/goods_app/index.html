@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}商城首页{% endblock %}
+
+{% block main %}
+    <div class="classes">
+        <ul class="classes-items">
+            {% for category in categoryList %}
+                <li class="items {% if category.id == currentid %} active {% endif %} "><a href="/category/{{ category.id }}/">{{ category.cname }}</a> </li>
+            {% endfor %}
+        </ul>
+
+    </div>
+
+    <div class="goods-model">
+        <div class="goods-content">
+        {% for goods in goods_page.object_list %}
+            <div class="good">
+                <a href="/goodsdetails/{{ goods.id }}/">
+                    <img src="{{ goods.getImgUrl }}" width="285px" height="285px">
+                    <p class="name">{{ goods.gname }}</p>
+                    <div class="price">
+                        <i>￥</i>
+                        <p class="big">{{ goods.price }}</p>
+                        <s>￥{{ goods.oldprice }}</s>
+                    </div>
+                    <div class="sale">
+                        特卖
+                    </div>
+                </a>
+            </div>
+
+
+    {% endfor %}
+        </div>
+    </div>
+
+    {% include 'paginator_common.html' %}
+{% endblock %}
+

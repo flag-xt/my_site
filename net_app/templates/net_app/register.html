@@ -1,0 +1,225 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>新用户注册</title>
+		<link rel="stylesheet" type="text/css" href="/static/register.css" />
+        <link rel="stylesheet" href="/static/index.css">
+        <script src="/static/jquery-1.12.4.min.js" type="text/javascript"></script>
+        <script>
+
+        // 由于django会进行csrf验证，如果不添加这个代码，那么所有的ajax的post请求，都会验证csrf失败
+        function  checkName(){
+
+				//汉字的正则表达式
+				var  reg=/^[\u4e00-\u9fa5]{2,5}$/;
+
+                var uname=document.getElementById("reg_userid");
+
+                var val=uname.value
+                var span=document.getElementById("reg_userid_span")
+                if(val==null||val==""){
+                    span.innerText="用户名不能为空";
+                    span.style.color='red';
+                    return false;
+                }
+                else if(reg.test(val)){
+                    span.innerText="O"
+                    span.style.color="green"
+                    return true;
+                }
+                else{
+                    span.innerText="用户名为2-5位中文数字";
+                    span.style.color='red'
+                    return false;
+                }
+
+
+			}
+
+		function checkPwd(){
+            var reg=/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/;
+
+            var uname=document.getElementById("reg_passwd");
+
+            var val=uname.value;
+
+            var span=document.getElementById("reg_passwd_span")
+            if(val==null||val==""){
+                span.innerText="密码不能为空";
+                span.style.color='red';
+                return false;
+
+            }
+            else if(reg.test(val)){
+                    span.innerText="O"
+                    span.style.color="green"
+                return true;
+            }
+            else{
+                span.innerText="密码至少包含数字和英文，长度6-20";
+                span.style.color='red';
+                return false;
+            }
+        }
+
+
+
+        function checkMail(){
+            var reg=/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+
+            var uname=document.getElementById("reg_mail")
+
+            var val=uname.value;
+
+            var span=document.getElementById('reg_mail_span')
+            if(val==null||val==""){
+                span.innerText="邮箱不能为空";
+                span.style.color='red';
+                return false;
+            }else if(reg.test(val)){
+                span.innerText="O"
+                span.style.color="green"
+                return true;
+            }else{
+                span.innerText='邮箱格式不正确';
+                span.style.color='red';
+                return false;
+            }
+        }
+
+
+
+        function  checkAgree(){
+				//同意框
+				var  check=document.getElementById("check");
+				//提交
+				var  sub=document.getElementById("reg_submit");
+
+				sub.disabled=!check.checked;
+			}
+
+            $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+
+        function send_mail_vcode() {
+		   // 获取用户名的内容
+            var username = $('#reg_mail').val();
+            // 提交ajax的请求
+            $.ajax({
+                url:"{% url 'net_app:send_mail_vcode' %}",
+                type:'POST',
+                data: {'username': username},
+                success: function(data) {
+                    alert(data['msg']);
+                }
+            }); // end ajax
+        }
+
+        function zong() {
+            var flag = checkName() && checkPwd();
+
+            if(!checkName()){
+                alert('请正确输入用户名');
+                return false;
+            }
+
+            else if(!checkPwd()){
+                alert('请正确输入密码');
+                return false;
+            }
+
+            return flag;
+        }
+
+
+
+        function validate_vcode(){
+            var vcode = $('#reg_vcode').val();
+            var username = $('#reg_mail').val();
+            $.ajax({
+                url:"{% url 'net_app:validate_mail_vcode' %}",
+                type:'POST',
+                data: {
+                    'vcode': vcode,
+                    'username': username
+                },
+                success: function(data) {
+                    if (!data['ok']){
+                        alert(data['msg']);
+                    }else{
+                        $('#register_form').submit();
+                    }
+                }
+            });
+            return false;
+        }
+        </script>
+	</head>
+	<body style="background: white">
+    <div class="head">
+        <div class="head-in">
+        <ul class="options">
+
+            <li class="sub"><a href="/">商场中心</a></li>
+            <li class="sub"><a href="/cart/queryAll/">我的购物车</a></li>
+        </ul>
+
+
+
+            <div class="register"><a href="/user/register/">免费注册</a></div>
+            <div class="sign"><a href="http://127.0.0.1:8000/user/login">登录</a></div>
+
+    </div>
+    </div>
+		<div id="regcontent" class="reg_content">
+		  	<form id="register_form" action="{% url 'net_app:register' %}" method="post" onsubmit="return zong()"  >
+                {% csrf_token %}
+             <table>
+		    <h3>用户注册</h3>
+		    <ul class="register_form_group">
+		      <li class="register_input_block">
+		        <label class="register_label">用户名</label>
+		                <input class="register_input" type="text" name="reg_userid" id="reg_userid" onblur="checkName()"/>
+		        <span class="tip register_hint" name="reg_same_userid" id="reg_userid_span">请输入2-5位中文名称</span>
+		      </li>
+
+		      <li class="register_input_block">
+		        <label class="register_label">密码</label>
+		        <input class="register_input" type="password" id="reg_passwd" name="reg_passwd" onblur="checkPwd()"/>
+		        <span class="tip register_hint" name="reg_passwd_check" id="reg_passwd_span">请输入密码</span>
+		      </li>
+
+              <li class="register_input_block">
+		        <label class="register_label">邮箱</label>
+		        <input class="register_input" type="text" id="reg_mail" name="reg_mail" onblur="checkMail()"/>
+		        <span class="tip register_hint" name="reg_mail_check" id="reg_mail_span">请输入邮箱</span>
+		      </li>
+
+              <li class="register_input_block">
+		        <label class="register_label">验证码</label>
+		        <div class="captcha_group">
+			        <input class="register_input" type="tel" id="reg_vcode" name="reg_vcode" >
+			        <input class ="tip register_hint_vcode" type="button" value="发送验证码" onclick="return send_mail_vcode();">
+		        </div>
+               </li>
+
+
+
+				<label style="color: white" >
+					<input class="tip register_hint_check" type="checkbox" name="" id="check" value="" style="vertical-align:middle" onclick="checkAgree()">
+                    <span>是否同意本公司协议</span>
+                </label>
+
+
+		        <button  id="reg_submit" class="btn-login" disabled="true" onclick="return validate_vcode()"  >注册</button>
+{#		        <button id="reg_submit" class="btn-login" value="注册"  disabled="true" onclick="return validate_vcode()" >#}
+
+		    </ul>
+             </table>
+		  </form>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block title %}订单{% endblock %}
+
+
+{% block main %}
+
+
+    <section class="cartMain">
+        <div class="cartMain_hd">
+            <ul class="order_lists cartTop">
+                <li class="list_chk">
+                    <!--所有商品全选-->
+                    <input type="checkbox" id="all" class="whole_check" style="display: inline-block;position:relative;left: -8px;top: 4px">
+
+                    全选
+                </li>
+                <li class="list_con">订单信息</li>
+                <li class="list_info">订单参数</li>
+                <li class="list_price">收货信息</li>
+                <li class="list_amount">数量</li>
+                <li class="list_sum">金额</li>
+                <li class="list_op">操作</li>
+            </ul>
+        </div>
+
+        <div class="cartBox">
+            <div class="order_content">
+                {% for cartItem in cartItemList %}
+
+                     <ul style="position: relative" class="order_lists" goodsid="{{ cartItem.goodsid }}" sizeid="{{ cartItem.sizeid }}" colorid="{{ cartItem.colorid }}">
+                        <li class="list_chk">
+                            <input type="checkbox" id="checkbox_2" class="son_check" style="display: inline-block;position:absolute;left: 21px;top: 54px">
+
+                        </li>
+                        <li class="list_con">
+                            <div class="list_img"><a href="javascript:;"><img src="{{ cartItem.getColor.colorurl }}" alt=""></a></div>
+                            <div class="list_text"><a href="javascript:;">{{ cartItem.getGoods.gname }}</a></div>
+                        </li>
+                        <li class="list_info">
+                            <p>颜色：{{ cartItem.getColor.colorname }}</p>
+                            <p>尺寸：{{ cartItem.getSize.sname }}</p>
+                        </li>
+                        <li class="list_price">
+                            <p class="price1">姓名：{{ cartItem.aname }}</p>
+                            <p class="price1">收货电话：{{ cartItem.aphone }}</p>
+                            <p class="price1">收货地址：{{ cartItem.addr }}</p>
+                        </li>
+                        <li class="list_amount">
+                            <div class="amount_box">
+                                <span class="price">{{ cartItem.count }}</span>
+                            </div>
+                        </li>
+                        <li class="list_sum">
+                            <p class="sum_price">￥{{ cartItem.getTotalPrice }}</p>
+                        </li>
+                        <li class="list_op">
+                            <p class="del"><a href="javascript:;" class="delBtn" goodsid="{{ cartItem.goodsid }}" sizeid="{{ cartItem.sizeid }}" colorid="{{ cartItem.colorid }}">删除订单</a></p>
+                        </li>
+                    </ul>
+
+                {% endfor %}
+
+            </div>
+        </div>
+        <!--底部-->
+
+    </section>
+
+    <section class="model_bg" style="display: none;"></section>
+    <section class="my_model" style="display: none;">
+        <p class="title">删除订单<span class="closeModel">X</span></p>
+        <p>您确认要删除该订单吗？</p>
+        <div class="opBtn"><a href="javascript:;" class="dialog-sure">确定</a><a href="javascript:;" class="dialog-close ">关闭</a>
+        </div>
+    </section>
+    {% csrf_token %}
+
+{% endblock %}
+
+
+{% block footerjs %}
+
+
+
+
+    <script>
+
+        $('.delBtn').click(function(){
+            var goodsid= $(this).attr('goodsid');
+            var colorid= $(this).attr('colorid');
+            var sizeid= $(this).attr('sizeid');
+            $('.dialog-sure').attr('goodsid',goodsid).attr('colorid',colorid).attr('sizeid',sizeid)
+        })
+
+
+        $('.dialog-sure').click(function(event){
+            var goodsid= $(this).attr('goodsid');
+            var colorid= $(this).attr('colorid');
+            var sizeid= $(this).attr('sizeid');
+            var csrfmiddlewaretoken = $('input[name="csrfmiddlewaretoken"]').val();
+
+            var data={
+                goodsid:goodsid,
+                colorid:colorid,
+                sizeid:sizeid,
+                csrfmiddlewaretoken:csrfmiddlewaretoken,
+                flag:'delete'
+            }
+
+            $.ajax({
+                type:'post',
+                url:'/order/',
+                data:data,
+                async:false,
+                success:function(result) {
+
+                },
+                error:function(event){
+                    //停止事件传播
+                    event.stopImmediatePropagation()
+                }
+
+            })
+        })
+
+
+
+    </script>
+
+
+
+{% endblock %}
