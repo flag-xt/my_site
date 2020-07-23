@@ -2,7 +2,9 @@
 <div class="head">
     <div class="head-in">
         <ul class="options">
+            {% if loginUser %}
             <li class="sub"><a href="/order/queryAll/">我的订单</a></li>
+            {% endif %}
 
             <li class="sub"><a href="/">商场中心</a></li>
             <li class="sub"><a href="/cart/queryAll/">我的购物车</a></li>
@@ -40,19 +42,19 @@
         <li class="item">
             <a href="/?category=2#">
                 <img src="/static/1_09.png">
-                <p>10:00开抢</p>
+                <p>天碍震星</p>
             </a>
         </li>
         <li class="item">
             <a href="/?category=2#">
                 <img src="/static/1_11.png">
-                <p>买手砍价</p>
+                <p>无限月读</p>
             </a>
         </li>
         <li class="item">
             <a href="/?category=2#">
                 <img src="/static/1_13.png">
-                <p>验货质检</p>
+                <p>伊邪那岐</p>
             </a>
         </li>
     </ul>

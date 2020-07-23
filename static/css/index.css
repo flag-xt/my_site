@@ -206,6 +206,7 @@ a {
     border-top-right-radius: 8px;
     text-align: center;
     line-height: 38px;
+
 }
 .nav_items>li.item.active{
     background-color: #ff464e;
@@ -234,7 +235,7 @@ a {
     float: left;
     width: 798px;
     height: 50px;
-    margin-left: 15px;
+    margin-left: 203px;
 }
 .classes-items>li.items{
     float: left;
@@ -279,12 +280,13 @@ a {
 }
 .good>a>p.name{
     margin-top: 14px;   
-    margin-left: 5px;
+    margin-left: 103px;
+    color: darkorange;
 }
 .good .price{
     position: absolute;
     bottom: 15px;
-    left: 0;
+    left: 75px;
     width: 110px;
     height: 30px;
     padding-left: 8px;

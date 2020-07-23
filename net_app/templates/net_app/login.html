@@ -130,7 +130,12 @@
 		  	<form id="register_form" action="{% url 'net_app:login' %}" method="post" onsubmit="return zong()"  >
                 {% csrf_token %}
              <table>
-		    <h3>用户登录</h3>
+		    <h3>
+                用户登录
+                {% if msg %}
+                    <p style="color: red">{{ msg }}</p>
+                {% endif %}
+            </h3>
 		    <ul class="register_form_group">
 		      <li class="register_input_block">
 		        <label class="register_label">用户名</label>

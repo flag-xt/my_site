@@ -4,6 +4,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.views import View
 
+from net_app.models import User
 from order_app.ordermanage import getOrderManger
 
 class OrderView(View):

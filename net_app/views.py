@@ -25,7 +25,7 @@ class Register(View):
         try:
             user=User.objects.get(username=uname,password=pwd)
             if user:
-                return HttpResponse("用户已经存在，请重新注册")
+                return render(request,'net_app/register.html',{'msg':'用户已存在'})
         except:
             User.objects.create(username=uname,password=pwd)
             return render(request,"net_app/center.html")
@@ -91,7 +91,7 @@ class Login(View):
             if reflag == 'cart':
                 return HttpResponseRedirect('/cart/queryAll/')
             return HttpResponseRedirect('/user/center/')
-        return HttpResponse("用户已经存在，请重新注册")
+        return render(request,'net_app/login.html',{'msg':'用户名或密码错误'})
 
 class LogOutView(View):
     def post(self,request):

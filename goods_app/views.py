@@ -40,9 +40,14 @@ class IndexHtml(View):
 def recommoned(func):
     def _wrapper(detailView,request,goodsid,*args,**kwargs):
 
-        c_goodsid=request.COOKIES.get('c_goodsid')
+        c_goodsid=request.COOKIES.get('c_goodsid','')
+        lis=[]
+        goodsIdList=[id for id in c_goodsid.split() if id.strip()]
 
-        goodsIdList=[id for id in list(set(c_goodsid.split())) if id.strip()]
+        for i in goodsIdList:
+            if i not in lis:
+                lis.append(i)
+        goodsIdList=lis
 
         for i in goodsIdList:
             if int(i)>22:
