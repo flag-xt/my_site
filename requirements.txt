@@ -12,7 +12,7 @@ Click==7.0
 colorama==0.4.3
 concurrent-log-handler==0.9.16
 crypto==1.4.1
-Django==2.2.2
+Django==2.2.13
 django-debug-toolbar==1.11
 django-qiniu-storage==2.3.1
 django-redis==4.11.0
